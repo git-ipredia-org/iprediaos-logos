@@ -138,7 +138,7 @@ rm -rf %{buildroot}
 %{_datadir}/firstboot/themes/*
 %{_datadir}/anaconda/boot/*
 %{_datadir}/anaconda/pixmaps/*
-%{_datadir}/icons/Fedora/*/apps/*
+%{_datadir}/icons/*/*/apps/*
 %{_datadir}/pixmaps/*
 %{_datadir}/plymouth/themes/charge/*
 %{_kde4_appsdir}/ksplash/Themes/Leonidas/2048x1536/logo.png
