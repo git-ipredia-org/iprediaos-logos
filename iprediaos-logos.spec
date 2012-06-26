@@ -86,6 +86,15 @@ mkdir -p %{buildroot}%{_datadir}/icons/Fedora/scalable/apps/
 install -p -m 644 icons/Fedora/48x48/apps/* %{buildroot}%{_datadir}/icons/Fedora/48x48/apps/
 install	-p -m 644 icons/Fedora/scalable/apps/* %{buildroot}%{_datadir}/icons/Fedora/scalable/apps/
 
+# Add icons for IprediaOS
+mkdir -p %{buildroot}%{_datadir}/icons/IprediaOS/scalable/apps/
+install -p -m 644 icons/IprediaOS/scalable/apps/* %{buildroot}%{_datadir}/icons/IprediaOS/scalable/apps/
+# Add icon for LXDE start menu
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps
+pushd $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps
+ln -s ../../../IprediaOS/scalable/apps/iprediaos-logo-icon.png icon-panel-menu.svg
+popd
+
 (cd anaconda; make DESTDIR=%{buildroot} install)
 
 # save some dup'd icons
