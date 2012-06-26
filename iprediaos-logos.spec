@@ -102,6 +102,8 @@ popd
 
 %post
 touch --no-create %{_datadir}/icons/Fedora || :
+touch --no-create %{_datadir}/icons/IprediaOS || :
+touch --no-create %{_datadir}/icons/hicolor || :
 touch --no-create %{_kde4_iconsdir}/oxygen ||:
 
 %postun
