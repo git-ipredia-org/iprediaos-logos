@@ -1601,7 +1601,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1613,7 +1613,7 @@
     <g
        id="layer1-3"
        inkscape:label="Layer 1"
-       transform="matrix(1.4904763,0,0,1.4904763,-540.73729,-627.02921)">
+       transform="matrix(1.4904763,0,0,1.4904763,-540.73729,-633.02921)">
       <g
          style="fill:url(#linearGradient3857);fill-opacity:1;stroke:#340000;stroke-width:4;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
          id="g3032">
