@@ -1,6 +1,6 @@
 Name:       iprediaos-logos
-Version:    1.0.0
-Release:    2%{?dist}
+Version:    1.1
+Release:    1%{?dist}
 Summary:    Icons and pictures
 
 Group:      System Environment/Base
@@ -87,48 +87,76 @@ install -p -m 644 icons/Fedora/48x48/apps/* %{buildroot}%{_datadir}/icons/Fedora
 install	-p -m 644 icons/Fedora/scalable/apps/* %{buildroot}%{_datadir}/icons/Fedora/scalable/apps/
 
 # Add icons for IprediaOS
-mkdir -p %{buildroot}%{_datadir}/icons/IprediaOS/scalable/apps/
-install -p -m 644 icons/IprediaOS/scalable/apps/* %{buildroot}%{_datadir}/icons/IprediaOS/scalable/apps/
-# Add icon for LXDE start menu
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps
-pushd $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps
-ln -s ../../../IprediaOS/scalable/apps/iprediaos-logo-icon.svg icon-panel-menu.svg
-popd
+for format in scalable 16x16 22x22 24x24 32x32 36x36 48x48 96x96 256x256 ; do
+
+  # Create folders
+  mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/IprediaOS/$format/apps
+  mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/$format/apps
+  mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/Bluecurve/$format/apps
+
+  # Add icons for IprediaOS 
+  for i in icons/IprediaOS/$format/apps/* ; do
+    install -p -m 644 $i $RPM_BUILD_ROOT%{_datadir}/icons/IprediaOS/$format/apps
+  done
+
+  # We need to know the filename extension 
+  if [ "$format" == "scalable" ] ; then
+    ext="svg"
+  else
+    ext="png"
+  fi
+
+  # Add symbolic links for hicolor theme
+  pushd $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/$format/apps
+   ln -s ../../../IprediaOS/$format/apps/iprediaos-logo-icon.$ext icon-panel-menu.$ext
+   ln -s ../../../IprediaOS/$format/apps/iprediaos-logo-icon.$ext gnome-main-menu.$ext
+   ln -s ../../../IprediaOS/$format/apps/iprediaos-logo-icon.$ext kmenu.$ext
+   ln -s ../../../IprediaOS/$format/apps/iprediaos-logo-icon.$ext start-here.$ext
+  popd
+  # Add symbolic links for Bluecurve theme
+  pushd $RPM_BUILD_ROOT%{_datadir}/icons/Bluecurve/$format/apps
+   ln -s ../../../IprediaOS/$format/apps/iprediaos-logo-icon.$ext icon-panel-menu.$ext
+   ln -s ../../../IprediaOS/$format/apps/iprediaos-logo-icon.$ext gnome-main-menu.$ext
+   ln -s ../../../IprediaOS/$format/apps/iprediaos-logo-icon.$ext kmenu.$ext
+   ln -s ../../../IprediaOS/$format/apps/iprediaos-logo-icon.$ext start-here.$ext
+  popd
+done
 
 (cd anaconda; make DESTDIR=%{buildroot} install)
 
 # save some dup'd icons
 /usr/sbin/hardlink -v %{buildroot}/
 
+
 %post
 touch --no-create %{_datadir}/icons/Fedora || :
 touch --no-create %{_datadir}/icons/IprediaOS || :
 touch --no-create %{_datadir}/icons/hicolor || :
+touch --no-create %{_datadir}/icons/Bluecurve || :
 touch --no-create %{_kde4_iconsdir}/oxygen ||:
+
 
 %postun
 if [ $1 -eq 0 ] ; then
-touch --no-create %{_datadir}/icons/Fedora || :
-touch --no-create %{_kde4_iconsdir}/oxygen ||:
-if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  if [ -f %{_datadir}/icons/Fedora/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_datadir}/icons/Fedora || :
-  fi
-  if [ -f %{_kde4_iconsdir}/Fedora-KDE/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_kde4_iconsdir}/Fedora-KDE/index.theme || :
-  fi
-fi
+  touch --no-create %{_datadir}/icons/Fedora || :
+  touch --no-create %{_datadir}/icons/IprediaOS || :
+  touch --no-create %{_datadir}/icons/hicolor || :
+  touch --no-create %{_datadir}/icons/Bluecurve || :
+  touch --no-create %{_kde4_iconsdir}/oxygen ||:
+  gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+  gtk-update-icon-cache %{_datadir}/icons/Bluecurve &>/dev/null || :
+  gtk-update-icon-cache %{_datadir}/icons/Fedora &>/dev/null || :
+  gtk-update-icon-cache %{_datadir}/icons/IprediaOS &>/dev/null || :
+  gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 fi
 
+
 %posttrans
-if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  if [ -f %{_datadir}/icons/Fedora/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_datadir}/icons/Fedora || :
-  fi
-  if [ -f %{_kde4_iconsdir}/oxygen/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_kde4_iconsdir}/oxygen/index.theme || :
-  fi
-fi
+gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+gtk-update-icon-cache %{_datadir}/icons/Bluecurve &>/dev/null || :
+gtk-update-icon-cache %{_datadir}/icons/Fedora &>/dev/null || :
+gtk-update-icon-cache %{_datadir}/icons/IprediaOS &>/dev/null || :
+gtk-update-icon-cache %{_kde4_iconsdir}/oxygen &>/dev/null || :
 
 
 %clean
@@ -143,6 +171,7 @@ rm -rf %{buildroot}
 %{_datadir}/icons/Fedora/*/apps/*
 %{_datadir}/icons/IprediaOS/*/apps/*
 %{_datadir}/icons/hicolor/*/apps/*
+%{_datadir}/icons/Bluecurve/*/apps/*
 %{_datadir}/pixmaps/*
 %{_datadir}/plymouth/themes/charge/*
 %{_kde4_appsdir}/ksplash/Themes/Leonidas/2048x1536/logo.png
@@ -153,6 +182,9 @@ rm -rf %{buildroot}
 # end i386 bits
 
 %changelog
+* Wed Jun 27 2012 Mattias Ohlsson <mattias.ohlsson@inprose.com> - 1.1-1
+- add png icons
+
 * Sat May 19 2012 Mattias Ohlsson <mattias.ohlsson@inprose.com> - 1.0.0-2
 - add grub2 background.png
 
