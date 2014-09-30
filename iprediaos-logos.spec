@@ -1,5 +1,5 @@
 Name:       iprediaos-logos
-Version:    1.1
+Version:    1.2
 Release:    1%{?dist}
 Summary:    Icons and pictures
 
@@ -197,6 +197,9 @@ rm -rf %{buildroot}
 %{_datadir}/pixmaps/poweredby.png
 
 %changelog
+* Tue Sep 30 2014 Mattias Ohlsson <mattias.ohlsson@inprose.com> - 1.2-1
+- sync with upstream
+
 * Wed Jun 27 2012 Mattias Ohlsson <mattias.ohlsson@inprose.com> - 1.1-1
 - add png icons
 
