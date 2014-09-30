@@ -33,7 +33,7 @@ unable for any reason to abide by the trademark restrictions on the
 fedora-logos or fedora-remix-logos package.
 
 %package httpd
-Summary: Fedora-related icons and pictures used by httpd
+Summary: IprediaOS-related icons and pictures used by httpd
 Provides: system-logos-httpd = %{version}-%{release}
 Provides: fedora-logos-httpd = %{version}-%{release}
 BuildArch: noarch
